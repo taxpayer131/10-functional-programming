@@ -38,7 +38,7 @@ $(document).ready(function(module){
 Article.loadAll = rows => {
   rows.sort((a,b) => (new Date(b.publishedOn)) - (new Date(a.publishedOn)));
 
-  // TODO: Refactor this forEach code, by using a `.map` call instead, since what we are trying to accomplish
+  // TODONE: Refactor this forEach code, by using a `.map` call instead, since what we are trying to accomplish
   // is the transformation of one collection into another. Remember that we can set variables equal to the result
   // of functions. So if we set a variable equal to the result of a .map, it will be our transformed array.
   // There is no need to push to anything.
@@ -66,20 +66,31 @@ Article.fetchAll = callback => {
   )
 };
 
-// TODO: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
+// TODONE: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
+
+// This function splits each word into a seperate string and counts them pushing that data into an article array.  So it should could the words buy counting the length of the array, which counds each element which should be words of each object.
 Article.numWordsAll = () => {
   return Article.all.map(article =>
-  article.body.split(' ').length).reduce(function(previous, current
+  article.body.split(' ').length).reduce(function(sum, current
   ){
-    return previous + current;
+    return sum + current;
   });
 };
 
-// TODO: Chain together a `map` and a `reduce` call to produce an array of unique author names. You will
+// TODONE: Chain together a `map` and a `reduce` call to produce an array of unique author names. You will.
 // probably need to use the optional accumulator argument in your reduce call.
+
+// returns the array mapped from the element contained therein === sum... 
 Article.allAuthors = () => {
-  return Article.all.map().reduce();
+  return Article.all.map(ele => {
+    return ele.author}).reduce((sum, value) => {
+      if(!sum.includes(value)){
+        sum.push(value);
+      }
+      return;
+    }, []);
 };
+
 
 Article.numWordsByAuthor = () => {
   return Article.allAuthors().map(author => {
