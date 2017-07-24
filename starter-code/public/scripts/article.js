@@ -1,13 +1,14 @@
 'use strict';
 var app = app || {};
 
+$(document).ready(function(module){
 // REVIEW: Check out all of the functions that we've cleaned up with arrow function syntax.
 
 // SCOTT WILL COVER TOMORROW: Wrap the contents of this file, except for the preceding 'use strict' and 'var app...' declararions, in an IIFE.
 // Give the IIFE a parameter called 'module'.
 // At the very end of the code, but still inside the IIFE, attach the 'Article' object to 'module'.
 // Where the IIFE is invoked, pass in the global 'app' object that is defined above.
-function Article(rawDataObj) {
+  function Article(rawDataObj) {
   /* REVIEW: In lab 8, we explored a lot of new functionality going on here. Let's re-examine
   the concept of context.
   Normally, "this" inside of a constructor function refers to the newly instantiated object.
@@ -19,12 +20,12 @@ function Article(rawDataObj) {
   lexical arrows, "this" inside the function will still be the same "this" as it was outside
   the function.
   As a result, we no longer have to pass in the optional "this" argument to forEach!*/
-  Object.keys(rawDataObj).forEach(key => this[key] = rawDataObj[key]);
-}
+    Object.keys(rawDataObj).forEach(key => this[key] = rawDataObj[key]);
+  }
 
-Article.all = [];
+  Article.all = [];
 
-Article.prototype.toHtml = function() {
+  Article.prototype.toHtml = function() {
   var template = Handlebars.compile($('#article-handlebars').text());
 
   this.daysAgo = parseInt((new Date() - new Date(this.publishedOn))/60/60/24/1000);
@@ -41,6 +42,11 @@ Article.loadAll = rows => {
   // is the transformation of one collection into another. Remember that we can set variables equal to the result
   // of functions. So if we set a variable equal to the result of a .map, it will be our transformed array.
   // There is no need to push to anything.
+
+//sets Article.all array equal to an array with new articles in it.
+  Article.all = rawData.map(ele => {
+    new Article(ele);
+  })
 
   /* OLD forEach():
   rawData.forEach(function(ele) {
@@ -62,7 +68,11 @@ Article.fetchAll = callback => {
 
 // TODO: Chain together a `map` and a `reduce` call to get a rough count of all words in all articles.
 Article.numWordsAll = () => {
-  return Article.all.map().reduce()
+  return Article.all.map(article =>
+  article.body.split(' ').length).reduce(function(previous, current
+  ){
+    return previous + current;
+  });
 };
 
 // TODO: Chain together a `map` and a `reduce` call to produce an array of unique author names. You will
@@ -128,3 +138,5 @@ Article.prototype.updateRecord = function(callback) {
   .then(console.log)
   .then(callback);
 };
+  module.Article
+})(app);//does this make the article.js an object?
